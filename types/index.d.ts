@@ -205,10 +205,6 @@ declare interface RightSidebarProps {
   banks: Bank[] & Account[];
 }
 
-declare interface SiderbarProps {
-  user: User;
-}
-
 declare interface RecentTransactionsProps {
   accounts: Account[];
   transactions: Transaction[];

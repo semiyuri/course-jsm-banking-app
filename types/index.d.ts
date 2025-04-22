@@ -148,10 +148,6 @@ declare interface BankInfoProps {
   type: "full" | "card";
 }
 
-declare interface MobileNavProps {
-  user: User;
-}
-
 declare interface PageHeaderProps {
   topTitle: string;
   bottomTitle: string;

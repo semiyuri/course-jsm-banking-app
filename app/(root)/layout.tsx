@@ -10,6 +10,7 @@ export default function RootLayout({
   const loggedIn = {
     firstName: "Yuri",
     lastName: "Developer",
+    email: "yuri@dev.com",
   };
 
   return (

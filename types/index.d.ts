@@ -136,12 +136,6 @@ declare type NewDwollaCustomerParams = {
   ssn: string;
 };
 
-declare interface CreditCardProps {
-  account: Account;
-  userName: string;
-  showBalance?: boolean;
-}
-
 declare interface BankInfoProps {
   account: Account;
   appwriteItemId?: string;
@@ -193,12 +187,6 @@ declare interface BankTabItemProps {
 
 declare interface FooterProps {
   user: User;
-}
-
-declare interface RightSidebarProps {
-  user: User;
-  transactions: Transaction[];
-  banks: Bank[] & Account[];
 }
 
 declare interface RecentTransactionsProps {

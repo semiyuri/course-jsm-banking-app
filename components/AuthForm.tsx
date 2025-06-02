@@ -13,28 +13,56 @@ import { AuthFormSchema } from "@/lib/schemas/AuthFormSchema";
 import { z } from "zod";
 import { AuthFormType } from "@/types/enums";
 import { Loader2 } from "lucide-react";
+import { fi } from "zod/v4/locales";
+import SignUp from "@/app/(auth)/sign-up/page";
+import { useRouter } from "next/navigation";
 
 const AuthForm = ({ type }: { type: AuthFormType }) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const formContext = useForm<z.infer<typeof AuthFormSchema>>({
-    resolver: zodResolver(AuthFormSchema),
+  const formSchema = AuthFormSchema(type);
+
+  const formContext = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      dateOfBirth: "",
+      ssn: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof AuthFormSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
 
-    setTimeout(() => {
-      console.log(values);
+    try {
+      // Sign up Appwrite & create plain link token
+
+      if (type === AuthFormType.SignUp) {
+        // const newUser = await signUp(data);
+        // setUser(newUser);
+      } else {
+        // const response = await signIn({
+        //   email: data.email,
+        //   password: data.password,
+        // });
+        // if (response) {
+        //   router.push("/");
+        // }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -81,6 +109,71 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
               onSubmit={formContext.handleSubmit(onSubmit)}
               className="space-y-4"
             >
+              {type === AuthFormType.SignUp && (
+                <>
+                  <div className="flex gap-4">
+                    <CustomInput
+                      formContext={formContext}
+                      name="firstName"
+                      label="First Name"
+                      placeholder="ex. John"
+                    />
+                    <CustomInput
+                      formContext={formContext}
+                      name="lastName"
+                      label="Last Name"
+                      placeholder="ex. Doe"
+                    />
+                  </div>
+
+                  <CustomInput
+                    formContext={formContext}
+                    name="address"
+                    label="Address"
+                    placeholder="Enter your specific address"
+                  />
+
+                  <CustomInput
+                    formContext={formContext}
+                    name="city"
+                    label="City"
+                    placeholder="Enter your city"
+                  />
+
+                  <div className="flex gap-4">
+                    <CustomInput
+                      formContext={formContext}
+                      name="state"
+                      label="State"
+                      placeholder="ex. NY"
+                    />
+
+                    <CustomInput
+                      formContext={formContext}
+                      name="postalCode"
+                      label="Postal Code"
+                      placeholder="ex. 11101"
+                    />
+                  </div>
+
+                  <div className="flex gap-4">
+                    <CustomInput
+                      formContext={formContext}
+                      name="dateOfBirth"
+                      label="Date of Birth"
+                      placeholder="yyyy-mm-dd"
+                    />
+
+                    <CustomInput
+                      formContext={formContext}
+                      name="ssn"
+                      label="SSN"
+                      placeholder="ex. 1234"
+                    />
+                  </div>
+                </>
+              )}
+
               <CustomInput
                 formContext={formContext}
                 name="email"

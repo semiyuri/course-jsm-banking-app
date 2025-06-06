@@ -5,23 +5,13 @@ import { ID } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../server/appwrite";
 import { parseStringify } from "../utils";
 
-export const signIn = async ({ email, password }: LoginUser) => {
+export const signIn = async ({ email, password }: signInProps) => {
   try {
-    // Simulate a sign-in process
-    const response = await fetch("/api/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const { account } = await createAdminClient();
 
-    if (!response.ok) {
-      throw new Error("Failed to sign in");
-    }
+    const response = await account.createEmailPasswordSession(email, password);
 
-    const data = await response.json();
-    return data; // Return user data or token
+    return parseStringify(response);
   } catch (error) {
     console.error("Sign-in error:", error);
   }

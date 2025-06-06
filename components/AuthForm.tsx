@@ -43,8 +43,6 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
     setIsLoading(true);
 
     try {
-      // Sign up Appwrite & create plain link token
-
       if (type === AuthFormType.SignUp) {
         const newUser = await signUp(data);
         setUser(newUser);
@@ -53,6 +51,7 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
           email: data.email,
           password: data.password,
         });
+
         if (response) {
           router.push("/");
         }

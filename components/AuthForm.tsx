@@ -13,9 +13,8 @@ import { AuthFormSchema } from "@/lib/schemas/AuthFormSchema";
 import { z } from "zod";
 import { AuthFormType } from "@/types/enums";
 import { Loader2 } from "lucide-react";
-import { fi } from "zod/v4/locales";
-import SignUp from "@/app/(auth)/sign-up/page";
 import { useRouter } from "next/navigation";
+import { signIn, signUp } from "@/lib/actions/user.actions";
 
 const AuthForm = ({ type }: { type: AuthFormType }) => {
   const router = useRouter();
@@ -29,7 +28,7 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
     defaultValues: {
       firstName: "",
       lastName: "",
-      address: "",
+      address1: "",
       city: "",
       state: "",
       postalCode: "",
@@ -47,16 +46,16 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
       // Sign up Appwrite & create plain link token
 
       if (type === AuthFormType.SignUp) {
-        // const newUser = await signUp(data);
-        // setUser(newUser);
+        const newUser = await signUp(data);
+        setUser(newUser);
       } else {
-        // const response = await signIn({
-        //   email: data.email,
-        //   password: data.password,
-        // });
-        // if (response) {
-        //   router.push("/");
-        // }
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+        if (response) {
+          router.push("/");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -128,7 +127,7 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
 
                   <CustomInput
                     formContext={formContext}
-                    name="address"
+                    name="address1"
                     label="Address"
                     placeholder="Enter your specific address"
                   />

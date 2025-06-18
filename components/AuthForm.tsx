@@ -15,6 +15,7 @@ import { AuthFormType } from "@/types/enums";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
+import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({ type }: { type: AuthFormType }) => {
   const router = useRouter();
@@ -96,127 +97,127 @@ const AuthForm = ({ type }: { type: AuthFormType }) => {
         </div>
       </header>
 
-      {user ? (
-        <div className="flex flex-col gap-4">
-          {/* User account linking form goes here */}
-        </div>
-      ) : (
-        <>
-          <Form {...formContext}>
-            <form
-              onSubmit={formContext.handleSubmit(onSubmit)}
-              className="space-y-4"
-            >
-              {type === AuthFormType.SignUp && (
-                <>
-                  <div className="flex gap-4">
-                    <CustomInput
-                      formContext={formContext}
-                      name="firstName"
-                      label="First Name"
-                      placeholder="ex. John"
-                    />
-                    <CustomInput
-                      formContext={formContext}
-                      name="lastName"
-                      label="Last Name"
-                      placeholder="ex. Doe"
-                    />
-                  </div>
-
+      {/* {user ? ( */}
+      <div className="flex flex-col gap-4">
+        <PlaidLink user={user} variant="primary" />
+      </div>
+      {/* ) : ( */}
+      <>
+        <Form {...formContext}>
+          <form
+            onSubmit={formContext.handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
+            {type === AuthFormType.SignUp && (
+              <>
+                <div className="flex gap-4">
                   <CustomInput
                     formContext={formContext}
-                    name="address1"
-                    label="Address"
-                    placeholder="Enter your specific address"
+                    name="firstName"
+                    label="First Name"
+                    placeholder="ex. John"
+                  />
+                  <CustomInput
+                    formContext={formContext}
+                    name="lastName"
+                    label="Last Name"
+                    placeholder="ex. Doe"
+                  />
+                </div>
+
+                <CustomInput
+                  formContext={formContext}
+                  name="address1"
+                  label="Address"
+                  placeholder="Enter your specific address"
+                />
+
+                <CustomInput
+                  formContext={formContext}
+                  name="city"
+                  label="City"
+                  placeholder="Enter your city"
+                />
+
+                <div className="flex gap-4">
+                  <CustomInput
+                    formContext={formContext}
+                    name="state"
+                    label="State"
+                    placeholder="ex. NY"
                   />
 
                   <CustomInput
                     formContext={formContext}
-                    name="city"
-                    label="City"
-                    placeholder="Enter your city"
+                    name="postalCode"
+                    label="Postal Code"
+                    placeholder="ex. 11101"
+                  />
+                </div>
+
+                <div className="flex gap-4">
+                  <CustomInput
+                    formContext={formContext}
+                    name="dateOfBirth"
+                    label="Date of Birth"
+                    placeholder="yyyy-mm-dd"
                   />
 
-                  <div className="flex gap-4">
-                    <CustomInput
-                      formContext={formContext}
-                      name="state"
-                      label="State"
-                      placeholder="ex. NY"
-                    />
+                  <CustomInput
+                    formContext={formContext}
+                    name="ssn"
+                    label="SSN"
+                    placeholder="ex. 1234"
+                  />
+                </div>
+              </>
+            )}
 
-                    <CustomInput
-                      formContext={formContext}
-                      name="postalCode"
-                      label="Postal Code"
-                      placeholder="ex. 11101"
-                    />
-                  </div>
+            <CustomInput
+              formContext={formContext}
+              name="email"
+              label="Email"
+              placeholder="Enter your email"
+            />
 
-                  <div className="flex gap-4">
-                    <CustomInput
-                      formContext={formContext}
-                      name="dateOfBirth"
-                      label="Date of Birth"
-                      placeholder="yyyy-mm-dd"
-                    />
+            <CustomInput
+              formContext={formContext}
+              name="password"
+              label="Password"
+              placeholder="Enter your password"
+              type="password"
+            />
 
-                    <CustomInput
-                      formContext={formContext}
-                      name="ssn"
-                      label="SSN"
-                      placeholder="ex. 1234"
-                    />
-                  </div>
-                </>
-              )}
+            <div className="flex flex-col gap-4">
+              <Button type="submit" className="form-btn" disabled={isLoading}>
+                {isLoading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : type === AuthFormType.SignIn ? (
+                  "Sign In"
+                ) : (
+                  "Sign Up"
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
 
-              <CustomInput
-                formContext={formContext}
-                name="email"
-                label="Email"
-                placeholder="Enter your email"
-              />
+        <footer className="flex justify-center gap-1">
+          <p className="text-14 font-normal text-gray-600">
+            {type === AuthFormType.SignIn
+              ? "Don't have an account?"
+              : "Already have an account?"}
+          </p>
 
-              <CustomInput
-                formContext={formContext}
-                name="password"
-                label="Password"
-                placeholder="Enter your password"
-                type="password"
-              />
-
-              <div className="flex flex-col gap-4">
-                <Button type="submit" className="form-btn" disabled={isLoading}>
-                  {isLoading ? (
-                    <Loader2 size={20} className="animate-spin" />
-                  ) : type === AuthFormType.SignIn ? (
-                    "Sign In"
-                  ) : (
-                    "Sign Up"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form>
-
-          <footer className="flex justify-center gap-1">
-            <p className="text-14 font-normal text-gray-600">
-              {type === AuthFormType.SignIn
-                ? "Don't have an account?"
-                : "Already have an account?"}
-            </p>
-
-            <Link
-              className="form-link"
-              href={type === AuthFormType.SignIn ? "/sign-up" : "/sign-in"}
-            >
-              {type === AuthFormType.SignIn ? "Sign Up" : "Sign In"}
-            </Link>
-          </footer>
-        </>
-      )}
+          <Link
+            className="form-link"
+            href={type === AuthFormType.SignIn ? "/sign-up" : "/sign-in"}
+          >
+            {type === AuthFormType.SignIn ? "Sign Up" : "Sign In"}
+          </Link>
+        </footer>
+      </>
+      {/* )} */}
     </section>
   );
 };
